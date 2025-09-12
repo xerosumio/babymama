@@ -166,9 +166,12 @@ const NavigationWithDropdown: React.FC = () => {
               onMouseLeave={handleMouseLeave}
             >
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-3 text-sm">
+                <Link
+                  href={category.href}
+                  className="block font-semibold text-gray-900 mb-3 text-sm hover:text-baby-600 transition-colors"
+                >
                   {category.name[router.locale as 'en' | 'zh-HK']}
-                </h3>
+                </Link>
                 <div className="space-y-2">
                   {category.subCategories.map((subCategory) => (
                     <Link

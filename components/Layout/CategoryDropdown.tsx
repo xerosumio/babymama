@@ -196,9 +196,12 @@ const CategoryDropdown: React.FC = () => {
             <div className="p-4">
               {hoveredCategory ? (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
+                  <Link
+                    href={categories.find(cat => cat.id === hoveredCategory)?.href || '#'}
+                    className="block font-semibold text-gray-900 mb-3 hover:text-baby-600 transition-colors"
+                  >
                     {categories.find(cat => cat.id === hoveredCategory)?.name[router.locale as 'en' | 'zh-HK']}
-                  </h3>
+                  </Link>
                   <div className="space-y-1">
                     {categories
                       .find(cat => cat.id === hoveredCategory)
