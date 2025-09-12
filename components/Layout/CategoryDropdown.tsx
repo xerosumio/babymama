@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -24,6 +24,45 @@ const CategoryDropdown: React.FC = () => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
+  const [isHovering, setIsHovering] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // 处理鼠标进入
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    setIsHovering(true)
+    setIsOpen(true)
+  }
+
+  // 处理鼠标离开
+  const handleMouseLeave = () => {
+    setIsHovering(false)
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false)
+      setHoveredCategory(null)
+    }, 150) // 150ms 延迟
+  }
+
+  // 处理分类悬停
+  const handleCategoryHover = (categoryId: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    setHoveredCategory(categoryId)
+  }
+
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
   const categories: Category[] = [
     {
       id: 'feeding',
@@ -116,7 +155,8 @@ const CategoryDropdown: React.FC = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        onMouseEnter={() => setIsOpen(true)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         className="flex items-center space-x-2 bg-baby-500 text-white px-4 py-2 rounded-md hover:bg-baby-600 transition-colors"
       >
         <Menu className="w-4 h-4" />
@@ -127,7 +167,8 @@ const CategoryDropdown: React.FC = () => {
       {isOpen && (
         <div
           className="absolute top-full left-0 mt-2 w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
-          onMouseLeave={() => setIsOpen(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <div className="grid grid-cols-2 gap-0">
             {/* Categories List */}
@@ -137,7 +178,7 @@ const CategoryDropdown: React.FC = () => {
                   <div
                     key={category.id}
                     className="relative"
-                    onMouseEnter={() => setHoveredCategory(category.id)}
+                    onMouseEnter={() => handleCategoryHover(category.id)}
                   >
                     <Link
                       href={category.href}

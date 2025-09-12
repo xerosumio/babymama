@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -23,6 +23,35 @@ const NavigationWithDropdown: React.FC = () => {
   const { t } = useTranslation('common')
   const router = useRouter()
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
+  const [isHovering, setIsHovering] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // 处理鼠标进入
+  const handleMouseEnter = (categoryId: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    setIsHovering(true)
+    setHoveredCategory(categoryId)
+  }
+
+  // 处理鼠标离开
+  const handleMouseLeave = () => {
+    setIsHovering(false)
+    timeoutRef.current = setTimeout(() => {
+      setHoveredCategory(null)
+    }, 150) // 150ms 延迟
+  }
+
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   const categories: Category[] = [
     {
@@ -118,8 +147,8 @@ const NavigationWithDropdown: React.FC = () => {
         <div
           key={category.id}
           className="relative"
-          onMouseEnter={() => setHoveredCategory(category.id)}
-          onMouseLeave={() => setHoveredCategory(null)}
+          onMouseEnter={() => handleMouseEnter(category.id)}
+          onMouseLeave={handleMouseLeave}
         >
           <Link
             href={category.href}
@@ -131,7 +160,11 @@ const NavigationWithDropdown: React.FC = () => {
 
           {/* Dropdown Menu */}
           {hoveredCategory === category.id && (
-            <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+            <div 
+              className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+              onMouseEnter={() => handleMouseEnter(category.id)}
+              onMouseLeave={handleMouseLeave}
+            >
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 text-sm">
                   {category.name[router.locale as 'en' | 'zh-HK']}
