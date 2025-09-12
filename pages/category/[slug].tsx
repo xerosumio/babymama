@@ -11,9 +11,11 @@ import { Product } from '@/lib/types'
 interface CategoryPageProps {
   products: Product[]
   categoryName: string
+  parentCategory?: string
+  parentCategoryName?: string
 }
 
-const CategoryPage: React.FC<CategoryPageProps> = ({ products, categoryName }) => {
+const CategoryPage: React.FC<CategoryPageProps> = ({ products, categoryName, parentCategory, parentCategoryName }) => {
   const { t } = useTranslation('common')
   const router = useRouter()
 
@@ -26,7 +28,20 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ products, categoryName }) =
             {t('common.home')}
           </button>
           <span>/</span>
-          <span className="text-gray-900">{categoryName}</span>
+          {parentCategory && parentCategoryName ? (
+            <>
+              <button 
+                onClick={() => router.push(`/category/${parentCategory}`)} 
+                className="hover:text-baby-600"
+              >
+                {parentCategoryName}
+              </button>
+              <span>/</span>
+              <span className="text-gray-900">{categoryName}</span>
+            </>
+          ) : (
+            <span className="text-gray-900">{categoryName}</span>
+          )}
         </nav>
 
         {/* Category Header */}
@@ -75,35 +90,35 @@ export const getStaticPaths: GetStaticPaths = async () => {
     'toys',
     'gear-travel',
     'maternity',
-    'feeding/bottles',
-    'feeding/formula',
-    'feeding/high-chairs',
-    'feeding/bibs',
-    'feeding/breastfeeding',
-    'diapers-wipes/diapers',
-    'diapers-wipes/wipes',
-    'diapers-wipes/changing',
-    'diapers-wipes/potty-training',
-    'baby-care/skincare',
-    'baby-care/bath',
-    'baby-care/health',
-    'baby-care/monitors',
-    'clothing/bodysuits',
-    'clothing/sleepwear',
-    'clothing/outerwear',
-    'clothing/accessories',
-    'toys/educational',
-    'toys/soft-toys',
-    'toys/activity',
-    'toys/outdoor',
-    'gear-travel/strollers',
-    'gear-travel/car-seats',
-    'gear-travel/carriers',
-    'gear-travel/travel',
-    'maternity/clothing',
-    'maternity/pillows',
-    'maternity/health',
-    'maternity/nursing'
+    'feeding%2Fbottles',
+    'feeding%2Fformula',
+    'feeding%2Fhigh-chairs',
+    'feeding%2Fbibs',
+    'feeding%2Fbreastfeeding',
+    'diapers-wipes%2Fdiapers',
+    'diapers-wipes%2Fwipes',
+    'diapers-wipes%2Fchanging',
+    'diapers-wipes%2Fpotty-training',
+    'baby-care%2Fskincare',
+    'baby-care%2Fbath',
+    'baby-care%2Fhealth',
+    'baby-care%2Fmonitors',
+    'clothing%2Fbodysuits',
+    'clothing%2Fsleepwear',
+    'clothing%2Fouterwear',
+    'clothing%2Faccessories',
+    'toys%2Feducational',
+    'toys%2Fsoft-toys',
+    'toys%2Factivity',
+    'toys%2Foutdoor',
+    'gear-travel%2Fstrollers',
+    'gear-travel%2Fcar-seats',
+    'gear-travel%2Fcarriers',
+    'gear-travel%2Ftravel',
+    'maternity%2Fclothing',
+    'maternity%2Fpillows',
+    'maternity%2Fhealth',
+    'maternity%2Fnursing'
   ]
 
   const paths = categories.map((slug) => ({
@@ -118,6 +133,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const slug = params?.slug as string
+  const decodedSlug = decodeURIComponent(slug)
   
   // Map category slugs to category names
   const categoryNames: { [key: string]: string } = {
@@ -159,24 +175,36 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     'maternity/nursing': 'Nursing Bras'
   }
 
+  // Determine if this is a subcategory and get parent info
+  let parentCategory: string | undefined
+  let parentCategoryName: string | undefined
+  
+  if (decodedSlug.includes('/')) {
+    const parts = decodedSlug.split('/')
+    parentCategory = parts[0]
+    parentCategoryName = categoryNames[parentCategory]
+  }
+
   // Filter products based on category
   const filteredProducts = mockProducts.filter(product => {
     const categorySlug = product.category.slug
     // Handle both main categories and subcategories
-    if (slug.includes('/')) {
+    if (decodedSlug.includes('/')) {
       // This is a subcategory, filter by main category
-      const mainCategory = slug.split('/')[0]
+      const mainCategory = decodedSlug.split('/')[0]
       return categorySlug === mainCategory
     } else {
       // This is a main category
-      return categorySlug === slug
+      return categorySlug === decodedSlug
     }
   })
 
   return {
     props: {
       products: JSON.parse(JSON.stringify(filteredProducts)),
-      categoryName: categoryNames[slug] || slug,
+      categoryName: categoryNames[decodedSlug] || decodedSlug,
+      parentCategory: parentCategory || null,
+      parentCategoryName: parentCategoryName || null,
       ...(await serverSideTranslations(locale ?? 'en', ['common']))
     }
   }

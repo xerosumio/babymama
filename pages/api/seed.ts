@@ -152,7 +152,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           accountName: 'COMFYDIAPER Ltd',
         },
         shippingTemplates: [],
-        password: await bcrypt.hash('password123', 12),
       },
     ]
 

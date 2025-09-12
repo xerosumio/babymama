@@ -275,7 +275,7 @@ export default function LogisticsPage() {
     }
   ]
 
-  const carriers = [...new Set(shipments.map(s => s.carrier))]
+  const carriers = Array.from(new Set(shipments.map(s => s.carrier)))
 
   return (
     <MerchantLayout>
