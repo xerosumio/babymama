@@ -1,0 +1,162 @@
+{
+  "navigation": {
+    "home": "首頁",
+    "categories": "分類",
+    "allCategories": "所有分類",
+    "feeding": "餵食",
+    "diapersWipes": "尿布與濕巾",
+    "babyCare": "嬰兒護理",
+    "clothing": "服裝",
+    "toys": "玩具",
+    "gearTravel": "用品與旅行",
+    "maternity": "孕婦用品",
+    "sale": "特價"
+  },
+  "header": {
+    "freeShipping": "訂單滿HK$500免運費",
+    "customerService": "客戶服務",
+    "searchPlaceholder": "搜尋嬰兒產品...",
+    "wishlist": "願望清單",
+    "cart": "購物車",
+    "account": "帳戶"
+  },
+  "homepage": {
+    "hero": {
+      "subtitle": "發現最新嬰兒必需品",
+      "title": "新品上市",
+      "description": "選購我們最新的優質嬰兒產品系列",
+      "cta": "→ 選購新品"
+    },
+    "featuredProducts": {
+      "title": "精選產品",
+      "subtitle": "精心挑選的優質嬰兒必需品",
+      "viewAll": "查看全部"
+    },
+    "recommendedForYou": "為您推薦",
+    "recommendedSubtitle": "為您量身定制的推薦產品",
+    "bestSellers": "熱銷產品",
+    "bestSellersSubtitle": "深受父母喜愛的熱門產品",
+    "newArrivals": "新品上市",
+    "newArrivalsSubtitle": "剛加入我們收藏的新鮮產品",
+    "userReviews": "用戶評價",
+    "userReviewsSubtitle": "聽聽我們快樂父母的心聲",
+    "newLabel": "新品",
+    "addToCart": "加入購物車",
+    "rating": "{{count}} 評價"
+  },
+  "product": {
+    "price": "HK${{price}}",
+    "comparePrice": "HK${{price}}",
+    "outOfStock": "缺貨",
+    "inStock": "有庫存",
+    "quantity": "數量",
+    "addToCart": "加入購物車",
+    "buyNow": "立即購買",
+    "description": "產品描述",
+    "specifications": "規格",
+    "reviews": "評價",
+    "writeReview": "寫評價",
+    "relatedProducts": "相關產品"
+  },
+  "cart": {
+    "title": "購物車",
+    "empty": "您的購物車是空的",
+    "subtotal": "小計",
+    "shipping": "運費",
+    "tax": "稅費",
+    "total": "總計",
+    "checkout": "結帳",
+    "continueShopping": "繼續購物",
+    "remove": "移除",
+    "update": "更新"
+  },
+  "checkout": {
+    "title": "結帳",
+    "shippingAddress": "送貨地址",
+    "billingAddress": "帳單地址",
+    "paymentMethod": "付款方式",
+    "orderSummary": "訂單摘要",
+    "placeOrder": "下單",
+    "sameAsShipping": "與送貨地址相同"
+  },
+  "account": {
+    "profile": "個人資料",
+    "orders": "訂單",
+    "addresses": "地址",
+    "paymentMethods": "付款方式",
+    "reviews": "評價",
+    "settings": "設定"
+  },
+  "newsletter": {
+    "title": "首次訂單享15%折扣！*",
+    "description": "訂閱我們的電子報，首次訂單即可享受15%折扣！搶先發現獨家優惠和最新嬰兒時尚趨勢。",
+    "placeholder": "您的電子郵件地址",
+    "button": "訂閱"
+  },
+  "trustInfo": {
+    "delivery": "香港快速追蹤配送",
+    "trusted": "數百萬父母信賴"
+  },
+  "paymentMethods": {
+    "title": "我們接受"
+  },
+  "wishlist": {
+    "title": "我的收藏",
+    "subtitle": "您的收藏中有 {{count}} 件商品",
+    "emptyTitle": "您的收藏是空的",
+    "emptyDescription": "點擊心形圖標保存您喜愛的商品",
+    "startShopping": "開始購物",
+    "continueShopping": "繼續購物",
+    "addToCart": "加入購物車"
+  },
+  "auth": {
+    "welcomeBack": "歡迎回來",
+    "loginSubtitle": "登入您的帳戶以繼續",
+    "createAccount": "建立帳戶",
+    "registerSubtitle": "加入我們，開始為您的小寶貝購物",
+    "email": "電子郵件地址",
+    "emailPlaceholder": "輸入您的電子郵件",
+    "password": "密碼",
+    "passwordPlaceholder": "輸入您的密碼",
+    "confirmPassword": "確認密碼",
+    "confirmPasswordPlaceholder": "確認您的密碼",
+    "firstName": "名字",
+    "firstNamePlaceholder": "輸入您的名字",
+    "lastName": "姓氏",
+    "lastNamePlaceholder": "輸入您的姓氏",
+    "phone": "電話號碼",
+    "phonePlaceholder": "輸入您的電話號碼",
+    "rememberMe": "記住我",
+    "forgotPassword": "忘記密碼？",
+    "login": "登入",
+    "signUp": "註冊",
+    "signIn": "登入",
+    "dontHaveAccount": "沒有帳戶？",
+    "alreadyHaveAccount": "已有帳戶？",
+    "orContinueWith": "或使用以下方式繼續",
+    "agreeTerms": "我同意",
+    "termsOfService": "服務條款",
+    "and": "和",
+    "privacyPolicy": "隱私政策"
+  },
+  "common": {
+    "loading": "載入中...",
+    "error": "發生錯誤",
+    "success": "成功",
+    "save": "儲存",
+    "cancel": "取消",
+    "edit": "編輯",
+    "delete": "刪除",
+    "confirm": "確認",
+    "back": "返回",
+    "home": "首頁",
+    "next": "下一步",
+    "previous": "上一步",
+    "search": "搜尋",
+    "filter": "篩選",
+    "sort": "排序",
+    "clear": "清除",
+    "apply": "套用",
+    "close": "關閉"
+  }
+}

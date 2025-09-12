@@ -1,0 +1,162 @@
+{
+  "navigation": {
+    "home": "Home",
+    "categories": "Categories",
+    "allCategories": "All Categories",
+    "feeding": "Feeding",
+    "diapersWipes": "Diapers & Wipes",
+    "babyCare": "Baby Care",
+    "clothing": "Clothing",
+    "toys": "Toys",
+    "gearTravel": "Gear & Travel",
+    "maternity": "Maternity",
+    "sale": "Sale"
+  },
+  "header": {
+    "freeShipping": "Free shipping on orders over HK$500",
+    "customerService": "Customer Service",
+    "searchPlaceholder": "Search for baby products...",
+    "wishlist": "Wishlist",
+    "cart": "Cart",
+    "account": "Account"
+  },
+  "homepage": {
+    "hero": {
+      "subtitle": "DISCOVER THE LATEST BABY ESSENTIALS",
+      "title": "New Arrivals",
+      "description": "Shop our newest collection of premium baby products",
+      "cta": "→ SHOP NEW ARRIVALS"
+    },
+    "featuredProducts": {
+      "title": "Featured Products",
+      "subtitle": "Carefully selected premium baby essentials",
+      "viewAll": "View All"
+    },
+    "recommendedForYou": "Recommended for You",
+    "recommendedSubtitle": "Personalized recommendations just for you",
+    "bestSellers": "Best Sellers",
+    "bestSellersSubtitle": "Our top-rated products loved by parents",
+    "newArrivals": "New Arrivals",
+    "newArrivalsSubtitle": "Fresh products just added to our collection",
+    "userReviews": "User Reviews",
+    "userReviewsSubtitle": "What our happy parents are saying",
+    "newLabel": "NEW",
+    "addToCart": "ADD TO CART",
+    "rating": "{{count}} reviews"
+  },
+  "product": {
+    "price": "HK${{price}}",
+    "comparePrice": "HK${{price}}",
+    "outOfStock": "Out of Stock",
+    "inStock": "In Stock",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "description": "Description",
+    "specifications": "Specifications",
+    "reviews": "Reviews",
+    "writeReview": "Write a Review",
+    "relatedProducts": "Related Products"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total",
+    "checkout": "Checkout",
+    "continueShopping": "Continue Shopping",
+    "remove": "Remove",
+    "update": "Update"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "paymentMethod": "Payment Method",
+    "orderSummary": "Order Summary",
+    "placeOrder": "Place Order",
+    "sameAsShipping": "Same as shipping address"
+  },
+  "account": {
+    "profile": "Profile",
+    "orders": "Orders",
+    "addresses": "Addresses",
+    "paymentMethods": "Payment Methods",
+    "reviews": "Reviews",
+    "settings": "Settings"
+  },
+  "newsletter": {
+    "title": "Get 15% off your first order!*",
+    "description": "Sign up for our newsletter and get 15% off your first order! Be the first to discover exclusive deals and the latest trends in baby fashion.",
+    "placeholder": "Your email address",
+    "button": "Sign up"
+  },
+  "trustInfo": {
+    "delivery": "Fast & tracked delivery from Hong Kong",
+    "trusted": "Trusted by millions of parents"
+  },
+  "paymentMethods": {
+    "title": "We accept"
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "subtitle": "{{count}} items in your wishlist",
+    "emptyTitle": "Your wishlist is empty",
+    "emptyDescription": "Save items you love by clicking the heart icon",
+    "startShopping": "Start Shopping",
+    "continueShopping": "Continue Shopping",
+    "addToCart": "Add to Cart"
+  },
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "loginSubtitle": "Sign in to your account to continue",
+    "createAccount": "Create Account",
+    "registerSubtitle": "Join us and start shopping for your little one",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Enter your phone number",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot your password?",
+    "login": "Sign In",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "orContinueWith": "Or continue with",
+    "agreeTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "home": "Home",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "clear": "Clear",
+    "apply": "Apply",
+    "close": "Close"
+  }
+}
