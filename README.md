@@ -1,162 +1,254 @@
-# babymama - Mother & Baby E-commerce Platform
+# 🍼 BabyMama E-commerce Platform
 
-A modern, multi-language e-commerce platform focused on mother and baby products, built with Next.js, TypeScript, MongoDB, and Tailwind CSS.
+A comprehensive e-commerce platform for baby products with three distinct portals: Customer, Merchant, and Admin.
 
-## Features
+## 🌟 Features
 
-- 🌐 **Multi-language Support**: English and Traditional Chinese (Hong Kong)
-- 📱 **Responsive Design**: Mobile-first PWA approach
-- 🛒 **E-commerce Functionality**: Product browsing, cart, checkout
-- 🎨 **Modern UI**: Clean, warm design following "Warm, Safe, Clean" aesthetic
-- 🗄️ **MongoDB Integration**: Scalable database with Mongoose ODM
-- 🚀 **Next.js 14**: Latest React framework with App Router
-- 🎯 **TypeScript**: Full type safety throughout the application
+### 🛒 Customer Portal
+- Complete shopping experience with product browsing
+- Shopping cart and wishlist functionality
+- User authentication and account management
+- Product reviews and ratings
+- Multi-language support (English/Chinese)
+- Responsive mobile-first design
 
-## Tech Stack
+### 🏪 Merchant Portal
+- Seller dashboard with product management
+- Order tracking and fulfillment
+- Sales analytics and reporting
+- Inventory management
+- Commission tracking
+- Independent merchant authentication
 
-- **Frontend**: Next.js 14, React 18, TypeScript, Tailwind CSS
-- **Backend**: Next.js API Routes, MongoDB, Mongoose
-- **Styling**: Tailwind CSS with custom design system
+### 👨‍💼 Admin Portal
+- Platform-wide management and oversight
+- User and merchant management
+- Sales analytics and reporting
+- Content management
+- System settings and configuration
+
+## 🛠 Tech Stack
+
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, Responsive Design
+- **Backend**: Next.js API Routes, MongoDB 7.0+
+- **Database**: Mongoose ODM
+- **Authentication**: JWT with bcryptjs
 - **Internationalization**: next-i18next
+- **State Management**: React Context API
 - **Icons**: Lucide React
-- **Database**: MongoDB
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-
 - Node.js 18+ 
-- MongoDB (local or cloud instance)
+- MongoDB 7.0+
 - npm or yarn
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd babymama-new
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/xerosumio/babymama.git
+   cd babymama
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env.local` file:
+   ```env
+   MONGODB_URI=mongodb://127.0.0.1:27017/babymama
+   JWT_SECRET=your-secret-key
+   NEXTAUTH_URL=http://localhost:3000
+   ```
+
+4. **Start MongoDB**
+   Make sure MongoDB is running on your local machine
+
+5. **Seed the database**
+   ```bash
+   curl -X POST http://localhost:3000/api/seed
+   ```
+
+6. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+7. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📱 Portal Access
+
+### Customer Portal
+- **URL**: `http://localhost:3000`
+- **Test Account**: 
+  - Email: `simple@test.com`
+  - Password: `test123`
+
+### Merchant Portal
+- **URL**: `http://localhost:3000/merchant`
+- **Test Account**:
+  - Email: `info@organicbaby.com`
+  - Password: `password123`
+
+### Admin Portal
+- **URL**: `http://localhost:3000/admin`
+- **Test Account**:
+  - Email: `admin@babymama.com`
+  - Password: `admin123`
+
+## 🗂 Project Structure
+
+```
+babymama/
+├── components/              # Reusable UI components
+│   ├── Admin/              # Admin-specific components
+│   ├── Homepage/           # Homepage components
+│   ├── Layout/             # Layout components
+│   └── Merchant/           # Merchant-specific components
+├── contexts/               # React Context providers
+│   ├── AdminContext.tsx    # Admin state management
+│   ├── CartContext.tsx     # Shopping cart state
+│   ├── MerchantContext.tsx # Merchant state management
+│   └── WishlistContext.tsx # Wishlist state
+├── lib/                    # Utility functions and types
+│   ├── mongodb.ts          # Database connection
+│   ├── types.ts            # TypeScript type definitions
+│   └── mockData.ts         # Sample data
+├── models/                 # MongoDB schemas
+│   ├── User.ts             # User model
+│   ├── Merchant.ts         # Merchant model
+│   ├── Product.ts          # Product model
+│   ├── Order.ts            # Order model
+│   ├── Category.ts         # Category model
+│   └── Review.ts           # Review model
+├── pages/                  # Next.js pages and API routes
+│   ├── api/                # API endpoints
+│   ├── admin/              # Admin portal pages
+│   ├── merchant/           # Merchant portal pages
+│   ├── auth/               # Authentication pages
+│   └── [other pages]       # Customer portal pages
+├── public/                 # Static assets
+│   ├── images/             # Image assets
+│   └── locales/            # Translation files
+└── styles/                 # Global styles
+    └── globals.css         # Global CSS
 ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+## 🗄 Database Schema
 
-3. Set up environment variables:
-```bash
-cp .env.example .env.local
-```
-
-Edit `.env.local` and add your MongoDB connection string:
-```
-MONGODB_URI=mongodb://localhost:27017/babymama
-```
-
-4. Seed the database with sample data:
-```bash
-curl -X POST http://localhost:3000/api/seed
-```
-
-5. Start the development server:
-```bash
-npm run dev
-```
-
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Project Structure
-
-```
-babymama-new/
-├── components/           # React components
-│   ├── Layout/          # Layout components (Header, Footer)
-│   └── Homepage/        # Homepage-specific components
-├── lib/                 # Utility functions and types
-├── models/              # MongoDB/Mongoose models
-├── pages/               # Next.js pages and API routes
-│   ├── api/            # API endpoints
-│   └── [pages].tsx     # Page components
-├── public/             # Static assets
-│   └── locales/        # i18n translation files
-├── styles/             # Global styles
-└── types/              # TypeScript type definitions
-```
-
-## Database Models
-
-- **User**: Customer information and preferences
-- **Product**: Product catalog with multi-language support
-- **Category**: Product categories and navigation
-- **Merchant**: Supplier/seller information
-- **Order**: Order management and tracking
+### Core Models
+- **User**: Customer accounts with authentication
+- **Merchant**: Seller accounts with business information
+- **Product**: Product catalog with variants and pricing
+- **Order**: Order management with items and status
+- **Category**: Product categorization with hierarchy
 - **Review**: Product reviews and ratings
-- **Banner**: Homepage promotional banners
 
-## API Endpoints
+### Data Relationships
+```
+User → Orders → OrderItems → Products → Merchant
+User → Reviews → Products
+Products → Categories
+Merchants → Products
+```
 
-- `GET /api/products` - Fetch products with filtering
-- `GET /api/categories` - Fetch product categories
-- `POST /api/seed` - Seed database with sample data
-- `GET /api/products/[id]` - Fetch single product details
+## 🔧 API Endpoints
 
-## Multi-language Support
+### Customer APIs
+- `GET /api/products` - Fetch products
+- `GET /api/categories` - Fetch categories
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
 
-The platform supports English and Traditional Chinese (Hong Kong). Language switching is available in the header, and all content is localized using next-i18next.
+### Merchant APIs
+- `POST /api/merchant/auth/login` - Merchant login
+- `POST /api/merchant/auth/register` - Merchant registration
+- `GET /api/merchant/dashboard` - Merchant dashboard data
 
-### Adding New Translations
+### Admin APIs
+- `POST /api/admin/auth/login` - Admin login
+- `GET /api/admin/dashboard` - Admin dashboard data
 
-1. Add new keys to `public/locales/en/common.json`
-2. Add corresponding translations to `public/locales/zh-HK/common.json`
-3. Use the `useTranslation` hook in components
+## 🌐 Internationalization
 
-## Design System
+The platform supports multiple languages:
+- English (en)
+- Chinese Hong Kong (zh-HK)
 
-The design follows the "Warm, Safe, Clean" aesthetic with:
-- **Primary Colors**: Baby blue (#0ea5e9) and soft pink (#f472b6)
-- **Typography**: Inter font family
-- **Spacing**: Consistent spacing scale using Tailwind
-- **Components**: Reusable component library
+Translation files are located in `public/locales/`.
 
-## Development
+## 📊 Features Overview
 
-### Available Scripts
+### Customer Features
+- ✅ Product browsing and search
+- ✅ Shopping cart functionality
+- ✅ Wishlist management
+- ✅ User authentication
+- ✅ Order placement and tracking
+- ✅ Product reviews and ratings
+- ✅ Multi-language support
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+### Merchant Features
+- ✅ Product management
+- ✅ Order tracking
+- ✅ Sales analytics
+- ✅ Inventory management
+- ✅ Commission tracking
+- ✅ Independent authentication
 
-### Code Style
+### Admin Features
+- ✅ User management
+- ✅ Merchant management
+- ✅ Platform analytics
+- ✅ Content management
+- ✅ System configuration
 
-- TypeScript for type safety
-- ESLint for code quality
-- Prettier for code formatting
-- Component-based architecture
+## 🚀 Deployment
 
-## Deployment
+### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Set environment variables in Vercel dashboard
+3. Deploy automatically on push to main branch
 
-The application can be deployed to any platform that supports Next.js:
+### Other Platforms
+- Ensure MongoDB is accessible
+- Set all required environment variables
+- Build the project: `npm run build`
+- Start production server: `npm start`
 
-1. **Vercel** (recommended)
-2. **Netlify**
-3. **AWS Amplify**
-4. **Docker containers**
-
-Make sure to set up your MongoDB connection string in the production environment.
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -m 'Add feature'`
+4. Push to branch: `git push origin feature-name`
 5. Submit a pull request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 📞 Support
 
-For support, email info@babymama.com or create an issue in the repository.
+For support and questions:
+- Create an issue on GitHub
+- Contact: [your-email@example.com]
 
+## 🎯 Roadmap
+
+- [ ] Payment gateway integration
+- [ ] Advanced analytics dashboard
+- [ ] Mobile app development
+- [ ] AI-powered product recommendations
+- [ ] Multi-currency support
+- [ ] Advanced shipping options
+
+---
+
+**Built with ❤️ for baby products e-commerce**
