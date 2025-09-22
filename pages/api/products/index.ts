@@ -32,7 +32,10 @@ async function getProducts(req: NextApiRequest, res: NextApiResponse) {
       order = 'desc' 
     } = req.query
 
-    const query: any = {}
+    const query: any = {
+      status: 'approved', // 只显示已审核的商品
+      isActive: true // 只显示激活的商品
+    }
     
     if (category) {
       query['categoryId'] = category
@@ -53,8 +56,6 @@ async function getProducts(req: NextApiRequest, res: NextApiResponse) {
       .sort(sortOptions)
       .limit(Number(limit) * 1)
       .skip((Number(page) - 1) * Number(limit))
-      .populate('categoryId', 'name slug')
-      .populate('merchantId', 'name email')
 
     const total = await Product.countDocuments(query)
 
@@ -75,10 +76,17 @@ async function getProducts(req: NextApiRequest, res: NextApiResponse) {
 
 async function createProduct(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const product = new Product(req.body)
-    await product.save()
+    // 确保新商品默认为pending状态，需要审核
+    const productData = {
+      ...req.body,
+      status: 'pending',
+      isActive: false // 新商品默认不激活，需要审核通过后才能激活
+    }
     
-    return res.status(201).json(product)
+    const product = new Product(productData)
+    const savedProduct = await product.save()
+    
+    return res.status(201).json(savedProduct)
   } catch (error) {
     console.error('Create product error:', error)
     return res.status(400).json({ error: 'Failed to create product' })

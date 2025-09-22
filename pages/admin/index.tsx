@@ -3,7 +3,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
-import { Shield, Store, Globe, Users, BarChart3, ShoppingCart, Settings, Building2, Activity, CheckCircle, Star, Zap } from 'lucide-react'
+import { Shield, Store, Globe, Users, BarChart3, ShoppingCart, Settings, Building2, Activity, CheckCircle, Star, Zap, FolderTree } from 'lucide-react'
 
 const AdminHomePage: React.FC = () => {
   const { t } = useTranslation('common')
@@ -13,6 +13,11 @@ const AdminHomePage: React.FC = () => {
       icon: Building2,
       title: 'Merchant Management',
       description: 'Manage merchant accounts, approvals, and performance monitoring'
+    },
+    {
+      icon: FolderTree,
+      title: 'Category Management',
+      description: 'Manage product categories and their hierarchical structure'
     },
     {
       icon: BarChart3,

@@ -18,6 +18,8 @@ const Header: React.FC = () => {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +29,38 @@ const Header: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Check login status
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem('token')
+      const userData = localStorage.getItem('user')
+      
+      if (token && userData) {
+        try {
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
+          setIsLoggedIn(true)
+        } catch (error) {
+          console.error('Error parsing user data:', error)
+          // Clear invalid data
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          setIsLoggedIn(false)
+          setUser(null)
+        }
+      } else {
+        setIsLoggedIn(false)
+        setUser(null)
+      }
+    }
+
+    checkLoginStatus()
+
+    // Listen for storage changes (login/logout from other tabs)
+    window.addEventListener('storage', checkLoginStatus)
+    return () => window.removeEventListener('storage', checkLoginStatus)
   }, [])
 
   const handleSearch = (e: React.FormEvent) => {
@@ -126,9 +160,23 @@ const Header: React.FC = () => {
 
 
                 {/* Login/Account */}
-                <Link href="/auth/login" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                  <User className="w-6 h-6 text-gray-700" />
-                </Link>
+                {isLoggedIn ? (
+                  <Link href="/account" className="p-2 hover:bg-gray-100 rounded-full transition-colors group relative">
+                    <User className="w-6 h-6 text-gray-700" />
+                    {/* User dropdown tooltip */}
+                    <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      {user?.firstName} {user?.lastName}
+                    </div>
+                  </Link>
+                ) : (
+                  <Link href="/auth/login" className="p-2 hover:bg-gray-100 rounded-full transition-colors group relative">
+                    <User className="w-6 h-6 text-gray-700" />
+                    {/* Sign in tooltip */}
+                    <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      Sign In
+                    </div>
+                  </Link>
+                )}
 
                 {/* Mobile Menu Button */}
                 <button

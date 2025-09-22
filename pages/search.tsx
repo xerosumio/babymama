@@ -37,23 +37,23 @@ const SearchPage: React.FC<SearchPageProps> = ({
   return (
     <Layout>
       <div className="bg-gray-50 min-h-screen">
-        <div className="container py-8">
+        <div className="container py-4 sm:py-8 px-3 sm:px-4">
           {/* Results Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
                 {query ? `Search results for "${query}"` : 'Search Results'}
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-sm sm:text-base text-gray-600 mt-1">
                 {totalResults} {totalResults === 1 ? 'result' : 'results'} found
               </p>
             </div>
             
-            <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+            <div className="flex items-center space-x-2 sm:space-x-4 mt-4 sm:mt-0">
               <select
                 value={sortBy}
                 onChange={(e) => handleSortChange(e.target.value)}
-                className="input w-40"
+                className="input w-32 sm:w-40 text-xs sm:text-sm"
               >
                 <option value="relevance">Most Relevant</option>
                 <option value="newest">Newest First</option>
@@ -68,7 +68,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
           {/* Results */}
           {products.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
@@ -76,15 +76,15 @@ const SearchPage: React.FC<SearchPageProps> = ({
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-center mt-8">
-                  <div className="flex space-x-2">
+                <div className="flex justify-center mt-6 sm:mt-8">
+                  <div className="flex space-x-1 sm:space-x-2">
                     <button
                       onClick={() => router.push({ 
                         pathname: '/search', 
                         query: { ...router.query, page: currentPage - 1 } 
                       })}
                       disabled={currentPage === 1}
-                      className="btn btn-outline btn-sm disabled:opacity-50"
+                      className="btn btn-outline btn-xs sm:btn-sm disabled:opacity-50 text-xs sm:text-sm"
                     >
                       Previous
                     </button>
@@ -96,7 +96,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
                           pathname: '/search', 
                           query: { ...router.query, page: i + 1 } 
                         })}
-                        className={`btn btn-sm ${
+                        className={`btn btn-xs sm:btn-sm text-xs sm:text-sm ${
                           currentPage === i + 1 
                             ? 'btn-primary' 
                             : 'btn-outline'
@@ -112,7 +112,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
                         query: { ...router.query, page: currentPage + 1 } 
                       })}
                       disabled={currentPage === totalPages}
-                      className="btn btn-outline btn-sm disabled:opacity-50"
+                      className="btn btn-outline btn-xs sm:btn-sm disabled:opacity-50 text-xs sm:text-sm"
                     >
                       Next
                     </button>
@@ -121,24 +121,24 @@ const SearchPage: React.FC<SearchPageProps> = ({
               )}
             </>
           ) : (
-            <div className="text-center py-12">
-              <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <div className="text-center py-8 sm:py-12">
+              <Search className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
                 No products found
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-sm sm:text-base text-gray-600 mb-6">
                 Try adjusting your search terms or browse our categories
               </p>
-              <div className="space-x-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <button
                   onClick={() => router.push('/products')}
-                  className="btn btn-primary"
+                  className="btn btn-primary text-sm sm:text-base"
                 >
                   Browse All Products
                 </button>
                 <button
                   onClick={() => router.push('/')}
-                  className="btn btn-outline"
+                  className="btn btn-outline text-sm sm:text-base"
                 >
                   Back to Home
                 </button>

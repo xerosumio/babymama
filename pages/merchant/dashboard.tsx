@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -73,9 +73,39 @@ const mockStats: DashboardStats = {
   ]
 }
 
+interface DashboardData {
+  stats: {
+    totalProducts: number
+    activeProducts: number
+    totalOrders: number
+    pendingOrders: number
+    processingOrders: number
+    totalSales: number
+    averageRating: number
+    totalReviews: number
+  }
+  recentOrders: Array<{
+    orderNumber: string
+    customer: any
+    status: string
+    total: number
+    createdAt: string
+  }>
+  recentReviews: Array<{
+    id: string
+    rating: number
+    comment: string
+    customer: any
+    product: any
+    createdAt: string
+  }>
+}
+
 export default function MerchantDashboard() {
   const router = useRouter()
   const { merchant, isAuthenticated, isLoading } = useMerchant()
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -83,7 +113,37 @@ export default function MerchantDashboard() {
     }
   }, [isAuthenticated, isLoading, router])
 
-  if (isLoading) {
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem('merchant_token')
+        if (!token || !merchant) return
+
+        const response = await fetch(`/api/merchant/dashboard?merchantId=${merchant._id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setDashboardData(data)
+        } else {
+          console.error('Failed to fetch dashboard data')
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (isAuthenticated && merchant) {
+      fetchDashboardData()
+    }
+  }, [isAuthenticated, merchant])
+
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -101,28 +161,28 @@ export default function MerchantDashboard() {
   const stats = [
     {
       name: 'Total Orders',
-      value: mockStats.totalOrders,
+      value: dashboardData?.stats.totalOrders || 0,
       icon: ShoppingCart,
       color: 'text-blue-600',
       bgColor: 'bg-blue-100'
     },
     {
       name: 'Pending Orders',
-      value: mockStats.pendingOrders,
+      value: dashboardData?.stats.pendingOrders || 0,
       icon: Clock,
       color: 'text-yellow-600',
       bgColor: 'bg-yellow-100'
     },
     {
       name: 'Total Revenue',
-      value: `HK$${mockStats.totalRevenue.toLocaleString()}`,
+      value: `HK$${(dashboardData?.stats.totalSales || 0).toLocaleString()}`,
       icon: DollarSign,
       color: 'text-green-600',
       bgColor: 'bg-green-100'
     },
     {
       name: 'Total Products',
-      value: mockStats.totalProducts,
+      value: dashboardData?.stats.totalProducts || 0,
       icon: Package,
       color: 'text-purple-600',
       bgColor: 'bg-purple-100'
@@ -185,7 +245,7 @@ export default function MerchantDashboard() {
         </div>
 
         {/* Alerts */}
-        {mockStats.lowStockProducts > 0 && (
+        {dashboardData && (dashboardData.stats.totalProducts - dashboardData.stats.activeProducts) > 0 && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -193,13 +253,13 @@ export default function MerchantDashboard() {
               </div>
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-yellow-800">
-                  Low Stock Alert
+                  Inactive Products Alert
                 </h3>
                 <div className="mt-2 text-sm text-yellow-700">
                   <p>
-                    You have {mockStats.lowStockProducts} products with low stock. 
+                    You have {dashboardData.stats.totalProducts - dashboardData.stats.activeProducts} inactive products. 
                     <a href="/merchant/products" className="font-medium underline hover:text-yellow-600">
-                      Review inventory
+                      Review products
                     </a>
                   </p>
                 </div>
@@ -217,38 +277,44 @@ export default function MerchantDashboard() {
             <div className="mt-5">
               <div className="flow-root">
                 <ul className="-my-5 divide-y divide-gray-200">
-                  {mockStats.recentOrders.map((order) => (
-                    <li key={order.id} className="py-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex-shrink-0">
-                          <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                            <ShoppingCart className="h-5 w-5 text-gray-500" />
+                  {dashboardData?.recentOrders?.length > 0 ? (
+                    dashboardData.recentOrders.map((order) => (
+                      <li key={order.orderNumber} className="py-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex-shrink-0">
+                            <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                              <ShoppingCart className="h-5 w-5 text-gray-500" />
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {order.orderNumber}
+                            </p>
+                            <p className="text-sm text-gray-500 truncate">
+                              {order.customer ? `${order.customer.firstName} ${order.customer.lastName}` : 'Guest Customer'}
+                            </p>
+                          </div>
+                          <div className="flex-shrink-0 text-right">
+                            <p className="text-sm font-medium text-gray-900">
+                              HK${order.total.toLocaleString()}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(order.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex-shrink-0">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                              {order.status}
+                            </span>
                           </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
-                            {order.orderNumber}
-                          </p>
-                          <p className="text-sm text-gray-500 truncate">
-                            {order.customer}
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0 text-right">
-                          <p className="text-sm font-medium text-gray-900">
-                            HK${order.total}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {order.date}
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                            {order.status}
-                          </span>
-                        </div>
-                      </div>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="py-4 text-center text-gray-500">
+                      No recent orders
                     </li>
-                  ))}
+                  )}
                 </ul>
               </div>
               <div className="mt-6">

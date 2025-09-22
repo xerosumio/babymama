@@ -206,7 +206,7 @@ export default function MerchantLogin() {
             <div className="space-y-2 text-xs text-blue-700">
               <div className="flex justify-between">
                 <span>商家账号:</span>
-                <span className="font-mono">merchant@test.com</span>
+                <span className="font-mono">test@babystore.com</span>
               </div>
               <div className="flex justify-between">
                 <span>密码:</span>
@@ -217,7 +217,7 @@ export default function MerchantLogin() {
               type="button"
               onClick={() => {
                 setFormData({
-                  email: 'merchant@test.com',
+                  email: 'test@babystore.com',
                   password: 'password123',
                 })
               }}

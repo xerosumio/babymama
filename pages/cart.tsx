@@ -43,16 +43,16 @@ const CartPage: React.FC = () => {
     return (
       <Layout>
         <div className="bg-gray-50 min-h-screen">
-          <div className="container py-16">
+          <div className="container py-8 sm:py-16">
             <div className="text-center">
-              <ShoppingBag className="w-24 h-24 text-gray-400 mx-auto mb-6" />
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              <ShoppingBag className="w-16 h-16 sm:w-24 sm:h-24 text-gray-400 mx-auto mb-4 sm:mb-6" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
                 {t('cart.empty')}
               </h1>
-              <p className="text-gray-600 mb-8">
+              <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
                 Looks like you haven't added any items to your cart yet.
               </p>
-              <div className="space-x-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <button
                   onClick={handleContinueShopping}
                   className="btn btn-primary btn-lg"
@@ -73,30 +73,30 @@ const CartPage: React.FC = () => {
   return (
     <Layout>
       <div className="bg-gray-50 min-h-screen">
-        <div className="container py-8">
-          <div className="flex items-center mb-8">
+        <div className="container py-4 sm:py-8">
+          <div className="flex items-center mb-6 sm:mb-8">
             <button
               onClick={() => router.back()}
-              className="flex items-center text-gray-600 hover:text-gray-900 mr-4"
+              className="flex items-center text-gray-600 hover:text-gray-900 mr-3 sm:mr-4"
             >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Back
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+              <span className="text-sm sm:text-base">Back</span>
             </button>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
               {t('cart.title')}
             </h1>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-sm">
-                <div className="p-6">
-                  <div className="space-y-6">
+                <div className="p-4 sm:p-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {state.items.map((item) => (
-                      <div key={item._id} className="flex items-center space-x-4 py-4 border-b border-gray-200 last:border-b-0">
+                      <div key={item._id} className="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 border-b border-gray-200 last:border-b-0">
                         {/* Product Image */}
-                        <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                           <Image
                             src={item.product.images[0] || '/placeholder-product.jpg'}
                             alt={item.product.name[locale]}
@@ -108,15 +108,15 @@ const CartPage: React.FC = () => {
 
                         {/* Product Info */}
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-lg font-medium text-gray-900 truncate">
+                          <h3 className="text-sm sm:text-lg font-medium text-gray-900 truncate">
                             {item.product.name[locale]}
                           </h3>
                           {item.variant && (
-                            <p className="text-sm text-gray-600">
+                            <p className="text-xs sm:text-sm text-gray-600">
                               {item.variant.name[locale]}
                             </p>
                           )}
-                          <p className="text-sm text-gray-500">
+                          <p className="text-xs sm:text-sm text-gray-500">
                             {item.product.merchant?.name}
                           </p>
                         </div>
@@ -131,9 +131,9 @@ const CartPage: React.FC = () => {
                             )}
                             className="p-1 border border-gray-300 rounded hover:bg-gray-50"
                           >
-                            <Minus className="w-4 h-4" />
+                            <Minus className="w-3 h-3 sm:w-4 sm:h-4" />
                           </button>
-                          <span className="w-12 text-center font-medium">
+                          <span className="w-8 sm:w-12 text-center font-medium text-sm sm:text-base">
                             {item.quantity}
                           </span>
                           <button
@@ -144,16 +144,16 @@ const CartPage: React.FC = () => {
                             )}
                             className="p-1 border border-gray-300 rounded hover:bg-gray-50"
                           >
-                            <Plus className="w-4 h-4" />
+                            <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
                           </button>
                         </div>
 
                         {/* Price */}
                         <div className="text-right">
-                          <p className="text-lg font-semibold text-gray-900">
+                          <p className="text-base sm:text-lg font-semibold text-gray-900">
                             {formatPrice(item.price * item.quantity)}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-xs sm:text-sm text-gray-500">
                             {formatPrice(item.price)} each
                           </p>
                         </div>
@@ -161,9 +161,9 @@ const CartPage: React.FC = () => {
                         {/* Remove Button */}
                         <button
                           onClick={() => removeFromCart(item.productId, item.variantId)}
-                          className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                          className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 transition-colors"
                         >
-                          <Trash2 className="w-5 h-5" />
+                          <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                         </button>
                       </div>
                     ))}
@@ -174,58 +174,58 @@ const CartPage: React.FC = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 sticky top-8">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                   Order Summary
                 </h2>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">{t('cart.subtotal')}</span>
-                    <span className="font-medium">{formatPrice(state.total)}</span>
+                    <span className="text-sm sm:text-base text-gray-600">{t('cart.subtotal')}</span>
+                    <span className="font-medium text-sm sm:text-base">{formatPrice(state.total)}</span>
                   </div>
                   
                   <div className="flex justify-between">
-                    <span className="text-gray-600">{t('cart.shipping')}</span>
-                    <span className="font-medium">
+                    <span className="text-sm sm:text-base text-gray-600">{t('cart.shipping')}</span>
+                    <span className="font-medium text-sm sm:text-base">
                       {state.total >= 500 ? 'Free' : formatPrice(50)}
                     </span>
                   </div>
                   
                   <div className="flex justify-between">
-                    <span className="text-gray-600">{t('cart.tax')}</span>
-                    <span className="font-medium">{formatPrice(0)}</span>
+                    <span className="text-sm sm:text-base text-gray-600">{t('cart.tax')}</span>
+                    <span className="font-medium text-sm sm:text-base">{formatPrice(0)}</span>
                   </div>
                   
-                  <div className="border-t border-gray-200 pt-4">
+                  <div className="border-t border-gray-200 pt-3 sm:pt-4">
                     <div className="flex justify-between">
-                      <span className="text-lg font-semibold text-gray-900">{t('cart.total')}</span>
-                      <span className="text-lg font-semibold text-gray-900">
+                      <span className="text-base sm:text-lg font-semibold text-gray-900">{t('cart.total')}</span>
+                      <span className="text-base sm:text-lg font-semibold text-gray-900">
                         {formatPrice(state.total + (state.total >= 500 ? 0 : 50))}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6 space-y-3">
+                <div className="mt-4 sm:mt-6 space-y-2 sm:space-y-3">
                   <button
                     onClick={handleCheckout}
-                    className="w-full bg-baby-500 text-white py-3 px-6 rounded-lg hover:bg-baby-600 transition-colors font-medium"
+                    className="w-full bg-baby-500 text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-baby-600 transition-colors font-medium text-sm sm:text-base"
                   >
                     {t('cart.checkout')}
                   </button>
                   
                   <button
                     onClick={handleContinueShopping}
-                    className="w-full border border-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                    className="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm sm:text-base"
                   >
                     {t('cart.continueShopping')}
                   </button>
                 </div>
 
                 {state.total < 500 && (
-                  <div className="mt-4 p-3 bg-baby-50 rounded-lg">
-                    <p className="text-sm text-baby-700">
+                  <div className="mt-3 sm:mt-4 p-2.5 sm:p-3 bg-baby-50 rounded-lg">
+                    <p className="text-xs sm:text-sm text-baby-700">
                       Add {formatPrice(500 - state.total)} more for free shipping!
                     </p>
                   </div>

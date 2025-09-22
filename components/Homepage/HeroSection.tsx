@@ -60,9 +60,9 @@ const HeroSection: React.FC = () => {
   }
 
   return (
-    <section className="relative bg-baby-50 min-h-[600px] overflow-hidden">
+    <section className="relative bg-baby-50 min-h-[500px] sm:min-h-[600px] overflow-hidden">
       {/* Full-width banner carousel */}
-      <div className="relative w-full h-[600px]">
+      <div className="relative w-full h-[500px] sm:h-[600px]">
         {/* Slides */}
         {banners.map((banner, index) => (
           <div
@@ -73,38 +73,38 @@ const HeroSection: React.FC = () => {
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
               {/* Left Column - Text Content */}
-              <div className="flex items-center justify-center lg:justify-end p-8 lg:p-16">
-                <div className="max-w-lg space-y-8">
-                  <div className="space-y-4">
-                    <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+              <div className="flex items-center justify-center lg:justify-end p-4 sm:p-8 lg:p-16">
+                <div className="max-w-lg space-y-4 sm:space-y-8">
+                  <div className="space-y-2 sm:space-y-4">
+                    <h2 className="text-xs sm:text-sm font-semibold text-gray-700 uppercase tracking-wide">
                       {banner.subtitle}
                     </h2>
-                    <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
+                    <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
                       {banner.title}
                     </h1>
-                    <p className="text-xl text-gray-600 leading-relaxed">
+                    <p className="text-sm sm:text-xl text-gray-600 leading-relaxed">
                       {banner.description}
                     </p>
                   </div>
                   
                   <Link 
                     href={banner.ctaLink}
-                    className="inline-flex items-center space-x-3 bg-baby-500 text-white px-10 py-5 rounded-lg hover:bg-baby-600 transition-colors font-semibold text-lg"
+                    className="inline-flex items-center space-x-2 sm:space-x-3 bg-baby-500 text-white px-6 sm:px-10 py-3 sm:py-5 rounded-lg hover:bg-baby-600 transition-colors font-semibold text-sm sm:text-lg"
                   >
                     <span>{banner.cta}</span>
-                    <ArrowRight className="w-6 h-6" />
+                    <ArrowRight className="w-4 h-4 sm:w-6 sm:h-6" />
                   </Link>
                 </div>
               </div>
 
               {/* Right Column - Image */}
-              <div className="relative flex items-center justify-center p-8 lg:p-16">
-                <div className="relative w-full max-w-md lg:max-w-lg">
+              <div className="relative flex items-center justify-center p-4 sm:p-8 lg:p-16">
+                <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
                   <div className="relative rounded-lg overflow-hidden shadow-2xl">
                     <img
                       src={banner.image}
                       alt={banner.title}
-                      className="w-full h-[400px] lg:h-[500px] object-cover"
+                      className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover"
                     />
                   </div>
                 </div>
@@ -116,27 +116,27 @@ const HeroSection: React.FC = () => {
         {/* Navigation Arrows */}
         <button
           onClick={goToPrevious}
-          className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-200 z-10"
+          className="absolute left-2 sm:left-6 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-2 sm:p-3 rounded-full shadow-lg transition-all duration-200 z-10"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
         </button>
         
         <button
           onClick={goToNext}
-          className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-200 z-10"
+          className="absolute right-2 sm:right-6 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-2 sm:p-3 rounded-full shadow-lg transition-all duration-200 z-10"
           aria-label="Next slide"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
         </button>
 
         {/* Dots Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3">
           {banners.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-4 h-4 rounded-full transition-all duration-200 ${
+              className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-200 ${
                 index === currentSlide 
                   ? 'bg-white shadow-lg' 
                   : 'bg-white/50 hover:bg-white/75'

@@ -10,9 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case 'GET':
         return await getCategories(req, res)
       case 'POST':
-        return await createCategory(req, res)
+        // Only allow GET for public API - POST should go through admin API
+        return res.status(403).json({ error: 'Category creation is only available through admin API' })
       default:
-        res.setHeader('Allow', ['GET', 'POST'])
+        res.setHeader('Allow', ['GET'])
         return res.status(405).json({ error: 'Method not allowed' })
     }
   } catch (error) {
@@ -25,30 +26,18 @@ async function getCategories(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { parent } = req.query
     
-    const query: any = {}
+    const query: any = { isActive: true } // Only return active categories for public API
     if (parent) {
       query.parentId = parent === 'null' ? null : parent
     }
 
     const categories = await Category.find(query)
       .populate('parentId', 'name slug')
-      .sort({ name: 1 })
+      .sort({ sortOrder: 1, name: 1 })
 
     return res.status(200).json(categories)
   } catch (error) {
     console.error('Get categories error:', error)
     return res.status(500).json({ error: 'Failed to fetch categories' })
-  }
-}
-
-async function createCategory(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const category = new Category(req.body)
-    await category.save()
-    
-    return res.status(201).json(category)
-  } catch (error) {
-    console.error('Create category error:', error)
-    return res.status(400).json({ error: 'Failed to create category' })
   }
 }

@@ -107,18 +107,46 @@ const mockProducts: Product[] = [
 export default function MerchantProducts() {
   const router = useRouter()
   const { merchant, isAuthenticated, isLoading } = useMerchant()
-  const [products, setProducts] = useState<Product[]>(mockProducts)
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [showLowStock, setShowLowStock] = useState(false)
 
+  // Fetch products from API
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem('merchant_token')
+        if (!token) return
+
+        const response = await fetch('/api/merchant/products', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setProducts(data.products)
+        } else {
+          console.error('Failed to fetch products')
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (isAuthenticated && merchant) {
+      fetchProducts()
+    } else if (!isLoading && !isAuthenticated) {
       router.push('/merchant/auth/login')
     }
-  }, [isAuthenticated, isLoading, router])
+  }, [isAuthenticated, isLoading, merchant, router])
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

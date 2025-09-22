@@ -15,16 +15,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await dbConnect()
 
     const { 
-      name, 
+      businessName,
+      businessType,
+      contactPerson,
       email, 
       password, 
       phone, 
-      description,
-      address 
+      address,
+      businessLicense,
+      taxId,
+      bankAccount
     } = req.body
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Name, email and password are required' })
+    if (!businessName || !email || !password || !contactPerson) {
+      return res.status(400).json({ error: 'Business name, email, password and contact person are required' })
     }
 
     // Check if merchant already exists
@@ -36,13 +40,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
 
+    // Generate slug from business name
+    const slug = businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+
     // Create merchant
     const merchant = new Merchant({
-      name,
+      name: businessName,
+      slug,
       email,
       password: hashedPassword,
       phone: phone || '',
-      description: description || { en: '', 'zh-HK': '' },
+      description: {
+        en: `${businessName} - Quality baby products`,
+        'zh-HK': `${businessName} - 优质婴儿用品`
+      },
       address: address || {
         street: '',
         city: '',
@@ -52,12 +63,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       isActive: false, // New merchants need approval
       commissionRate: 10, // Default commission rate
-      payoutAccount: {
+      payoutAccount: bankAccount || {
         type: 'bank',
         accountId: '',
         accountName: ''
       },
-      shippingTemplates: []
+      shippingTemplates: [],
+      // Additional fields for merchant registration
+      businessType: businessType || 'individual',
+      contactPerson: contactPerson,
+      businessLicense: businessLicense || '',
+      taxId: taxId || '',
+      status: 'pending' // Set initial status to pending
     })
 
     await merchant.save()

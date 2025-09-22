@@ -36,22 +36,27 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
     setError(null);
     
     try {
-      // 模拟登录验证
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 简单的测试账号验证
-      if (username === 'admin@test.com' && password === 'admin123') {
-        const user = {
-          id: '1',
-          username: 'admin@test.com',
-          name: 'Admin User',
-          role: 'admin'
-        };
+      // Call the actual admin login API
+      const response = await fetch('/api/admin/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const user = data.admin;
+        const token = data.token;
+        
         setAdminUser(user);
         setIsAdmin(true);
         localStorage.setItem('adminUser', JSON.stringify(user));
+        localStorage.setItem('adminToken', token);
       } else {
-        setError('Invalid username or password');
+        const errorData = await response.json();
+        setError(errorData.error || 'Login failed');
       }
     } catch (err) {
       setError('Login failed. Please try again.');
@@ -64,6 +69,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
     setAdminUser(null);
     setIsAdmin(false);
     localStorage.removeItem('adminUser');
+    localStorage.removeItem('adminToken');
   };
 
   const clearError = () => {
@@ -73,13 +79,16 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   // 检查本地存储中的用户信息
   React.useEffect(() => {
     const savedUser = localStorage.getItem('adminUser');
-    if (savedUser) {
+    const savedToken = localStorage.getItem('adminToken');
+    
+    if (savedUser && savedToken) {
       try {
         const user = JSON.parse(savedUser);
         setAdminUser(user);
         setIsAdmin(true);
       } catch (err) {
         localStorage.removeItem('adminUser');
+        localStorage.removeItem('adminToken');
       }
     }
   }, []);

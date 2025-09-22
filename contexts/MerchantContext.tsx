@@ -89,12 +89,17 @@ export function MerchantProvider({ children }: { children: React.ReactNode }) {
       try {
         const token = localStorage.getItem('merchant_token')
         if (token) {
-          // In a real app, you would verify the token with the server
-          // For now, we'll just check if it exists
           const merchantData = localStorage.getItem('merchant_data')
           if (merchantData) {
             const merchant = JSON.parse(merchantData)
-            dispatch({ type: 'LOGIN_SUCCESS', payload: merchant })
+            // Check if merchant is active
+            if (merchant.status === 'active' && merchant.isActive) {
+              dispatch({ type: 'LOGIN_SUCCESS', payload: merchant })
+            } else {
+              // Clear invalid session
+              localStorage.removeItem('merchant_token')
+              localStorage.removeItem('merchant_data')
+            }
           }
         }
       } catch (error) {
@@ -111,43 +116,30 @@ export function MerchantProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'LOGIN_START' })
     
     try {
-      // In a real app, you would make an API call here
-      // For now, we'll simulate a login
-      if (email === 'merchant@test.com' && password === 'password123') {
-        const mockMerchant: Merchant = {
-          _id: '1',
-          businessName: 'Baby Care Store',
-          businessType: 'company',
-          contactPerson: 'John Doe',
-          email: 'merchant@test.com',
-          phone: '+852-1234-5678',
-          address: {
-            street: '123 Main Street',
-            city: 'Hong Kong',
-            state: 'Hong Kong',
-            postalCode: '00000',
-            country: 'Hong Kong'
-          },
-          businessLicense: 'BL123456',
-          taxId: 'TX123456',
-          bankAccount: {
-            accountName: 'Baby Care Store Ltd',
-            accountNumber: '1234567890',
-            bankName: 'HSBC',
-            bankCode: '004'
-          },
-          status: 'approved',
-          commissionRate: 0.15,
-          createdAt: new Date('2024-01-01'),
-          updatedAt: new Date(),
-          lastLoginAt: new Date()
-        }
+      // Call the actual login API
+      const response = await fetch('/api/merchant/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const merchant = data.merchant
         
-        localStorage.setItem('merchant_token', 'mock_token')
-        localStorage.setItem('merchant_data', JSON.stringify(mockMerchant))
-        dispatch({ type: 'LOGIN_SUCCESS', payload: mockMerchant })
+        // Check if merchant is active
+        if (merchant.status === 'active' && merchant.isActive) {
+          localStorage.setItem('merchant_token', data.token)
+          localStorage.setItem('merchant_data', JSON.stringify(merchant))
+          dispatch({ type: 'LOGIN_SUCCESS', payload: merchant })
+        } else {
+          throw new Error('Your account is pending approval or has been suspended')
+        }
       } else {
-        throw new Error('Invalid credentials')
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Login failed')
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Login failed'
@@ -159,39 +151,30 @@ export function MerchantProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'LOGIN_START' })
     
     try {
-      // In a real app, you would make an API call here
-      // For now, we'll simulate a registration
-      const newMerchant: Merchant = {
-        _id: Date.now().toString(),
-        businessName: merchantData.businessName || '',
-        businessType: merchantData.businessType || 'individual',
-        contactPerson: merchantData.contactPerson || '',
-        email: merchantData.email || '',
-        phone: merchantData.phone || '',
-        address: merchantData.address || {
-          street: '',
-          city: '',
-          state: '',
-          postalCode: '',
-          country: ''
+      // Call the actual registration API
+      const response = await fetch('/api/merchant/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        businessLicense: merchantData.businessLicense,
-        taxId: merchantData.taxId,
-        bankAccount: merchantData.bankAccount || {
-          accountName: '',
-          accountNumber: '',
-          bankName: '',
-          bankCode: ''
-        },
-        status: 'pending',
-        commissionRate: 0.15,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        body: JSON.stringify(merchantData)
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const merchant = data.merchant
+        
+        // Store merchant data and token
+        localStorage.setItem('merchant_token', data.token)
+        localStorage.setItem('merchant_data', JSON.stringify(merchant))
+        dispatch({ type: 'LOGIN_SUCCESS', payload: merchant })
+        
+        // Show success message
+        alert('Registration successful! Your account is pending approval.')
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Registration failed')
       }
-      
-      // In a real app, you would save to database
-      console.log('Merchant registered:', newMerchant)
-      dispatch({ type: 'LOGIN_SUCCESS', payload: newMerchant })
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Registration failed'
       dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage })

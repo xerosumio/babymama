@@ -60,10 +60,10 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
   return (
     <Layout>
       <div className="bg-white">
-        <div className="container py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="container py-4 sm:py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12">
             {/* Product Images */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* Main Image */}
               <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                 <Image
@@ -100,29 +100,29 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
             </div>
 
             {/* Product Info */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Brand & Title */}
               <div>
-                <div className="text-sm font-semibold text-baby-600 uppercase tracking-wide mb-2">
+                <div className="text-xs sm:text-sm font-semibold text-baby-600 uppercase tracking-wide mb-2">
                   {product.merchant?.name}
                 </div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
                   {product.name[locale]}
                 </h1>
                 
                 {/* Rating */}
-                <div className="flex items-center space-x-2 mb-4">
+                <div className="flex items-center space-x-2 mb-3 sm:mb-4">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-5 h-5 ${
+                        className={`w-4 h-4 sm:w-5 sm:h-5 ${
                           i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-xs sm:text-sm text-gray-600">
                     {t('homepage.rating', { count: 124 })}
                   </span>
                 </div>
@@ -131,17 +131,17 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
               {/* Price */}
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
-                  <span className="text-3xl font-bold text-baby-600">
+                  <span className="text-2xl sm:text-3xl font-bold text-baby-600">
                     {formatPrice(selectedVariant?.price || product.price)}
                   </span>
                   {product.compareAtPrice && product.compareAtPrice > product.price && (
-                    <span className="text-xl text-gray-500 line-through">
+                    <span className="text-lg sm:text-xl text-gray-500 line-through">
                       {formatPrice(product.compareAtPrice)}
                     </span>
                   )}
                 </div>
                 {product.compareAtPrice && product.compareAtPrice > product.price && (
-                  <div className="text-sm text-green-600 font-medium">
+                  <div className="text-xs sm:text-sm text-green-600 font-medium">
                     Save {formatPrice(product.compareAtPrice - product.price)} ({Math.round((1 - product.price / product.compareAtPrice) * 100)}% off)
                   </div>
                 )}
@@ -150,21 +150,21 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
               {/* Variants */}
               {product.variants.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900 mb-3">Options</h3>
+                  <h3 className="text-xs sm:text-sm font-medium text-gray-900 mb-2 sm:mb-3">Options</h3>
                   <div className="space-y-2">
                     {product.variants.map((variant) => (
                       <button
                         key={variant._id}
                         onClick={() => setSelectedVariant(variant)}
-                        className={`w-full text-left p-3 border rounded-lg ${
+                        className={`w-full text-left p-2 sm:p-3 border rounded-lg ${
                           selectedVariant?._id === variant._id
                             ? 'border-baby-500 bg-baby-50'
                             : 'border-gray-300 hover:border-gray-400'
                         }`}
                       >
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">{variant.name[locale]}</span>
-                          <span className="text-baby-600 font-semibold">
+                          <span className="font-medium text-sm sm:text-base">{variant.name[locale]}</span>
+                          <span className="text-baby-600 font-semibold text-sm sm:text-base">
                             {formatPrice(variant.price)}
                           </span>
                         </div>
@@ -176,7 +176,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
 
               {/* Quantity */}
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Quantity</h3>
+                <h3 className="text-xs sm:text-sm font-medium text-gray-900 mb-2 sm:mb-3">Quantity</h3>
                 <div className="flex items-center space-x-3">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -184,7 +184,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="w-12 text-center font-medium">{quantity}</span>
+                  <span className="w-12 text-center font-medium text-sm sm:text-base">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
@@ -195,11 +195,11 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <button
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
-                  className={`w-full py-3 px-6 rounded-lg font-medium flex items-center justify-center space-x-2 transition-colors ${
+                  className={`w-full py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-medium flex items-center justify-center space-x-2 transition-colors text-sm sm:text-base ${
                     showAddedToCart
                       ? 'bg-green-500 text-white'
                       : isAddingToCart
@@ -209,17 +209,17 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
                 >
                   {showAddedToCart ? (
                     <>
-                      <Check className="w-5 h-5" />
+                      <Check className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>Added to Cart!</span>
                     </>
                   ) : isAddingToCart ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
                       <span>Adding...</span>
                     </>
                   ) : (
                     <>
-                      <ShoppingCart className="w-5 h-5" />
+                      <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>{t('product.addToCart')}</span>
                     </>
                   )}
@@ -227,45 +227,45 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
                 
                 <button
                   onClick={handleBuyNow}
-                  className="w-full bg-orange-500 text-white py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors font-medium"
+                  className="w-full bg-orange-500 text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm sm:text-base"
                 >
                   {t('product.buyNow')}
                 </button>
                 
-                <button className="w-full border border-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center space-x-2">
-                  <Heart className="w-5 h-5" />
+                <button className="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center space-x-2 text-sm sm:text-base">
+                  <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>Add to Wishlist</span>
                 </button>
               </div>
 
               {/* Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-200">
                 <div className="flex items-center space-x-2">
-                  <Truck className="w-5 h-5 text-baby-500" />
-                  <span className="text-sm text-gray-600">Free Shipping</span>
+                  <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-baby-500" />
+                  <span className="text-xs sm:text-sm text-gray-600">Free Shipping</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Shield className="w-5 h-5 text-baby-500" />
-                  <span className="text-sm text-gray-600">Secure Payment</span>
+                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-baby-500" />
+                  <span className="text-xs sm:text-sm text-gray-600">Secure Payment</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RotateCcw className="w-5 h-5 text-baby-500" />
-                  <span className="text-sm text-gray-600">Easy Returns</span>
+                  <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 text-baby-500" />
+                  <span className="text-xs sm:text-sm text-gray-600">Easy Returns</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Product Details */}
-          <div className="mt-16">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="mt-8 sm:mt-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
               {/* Description */}
               <div className="lg:col-span-2">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                   {t('product.description')}
                 </h2>
                 <div className="prose max-w-none">
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
                     {product.description[locale]}
                   </p>
                 </div>
@@ -273,17 +273,17 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, relatedProducts }) =
 
               {/* Specifications */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
                   {t('product.specifications')}
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600">Weight</span>
-                    <span className="font-medium">{product.weight} kg</span>
+                    <span className="text-gray-600 text-sm sm:text-base">Weight</span>
+                    <span className="font-medium text-sm sm:text-base">{product.weight} kg</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-200">
-                    <span className="text-gray-600">Dimensions</span>
-                    <span className="font-medium">
+                    <span className="text-gray-600 text-sm sm:text-base">Dimensions</span>
+                    <span className="font-medium text-sm sm:text-base">
                       {product.dimensions.length} × {product.dimensions.width} × {product.dimensions.height} cm
                     </span>
                   </div>
