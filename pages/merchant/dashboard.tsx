@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useMerchant } from '@/contexts/MerchantContext'
@@ -318,12 +319,12 @@ export default function MerchantDashboard() {
                 </ul>
               </div>
               <div className="mt-6">
-                <a
+                <Link
                   href="/merchant/orders"
                   className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                 >
                   View all orders
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -336,7 +337,7 @@ export default function MerchantDashboard() {
               Quick Actions
             </h3>
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              <a
+              <Link
                 href="/merchant/products/new"
                 className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 rounded-lg border border-gray-300 hover:border-gray-400"
               >
@@ -354,9 +355,9 @@ export default function MerchantDashboard() {
                     Create a new product listing
                   </p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/merchant/orders"
                 className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 rounded-lg border border-gray-300 hover:border-gray-400"
               >
@@ -374,9 +375,9 @@ export default function MerchantDashboard() {
                     View and process orders
                   </p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/merchant/analytics"
                 className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 rounded-lg border border-gray-300 hover:border-gray-400"
               >
@@ -394,9 +395,9 @@ export default function MerchantDashboard() {
                     Check sales performance
                   </p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/merchant/settings"
                 className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 rounded-lg border border-gray-300 hover:border-gray-400"
               >
@@ -414,7 +415,7 @@ export default function MerchantDashboard() {
                     Manage store preferences
                   </p>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
