@@ -85,6 +85,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         email: 'info@organicbaby.com',
         password: hashedMerchantPassword,
         phone: '+852 1234 5678',
+        contactPerson: 'John Smith',
         address: {
           street: '123 Baby Street',
           city: 'Hong Kong',
@@ -111,6 +112,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         email: 'info@nutribaby.com',
         password: hashedMerchantPassword,
         phone: '+852 2345 6789',
+        contactPerson: 'Jane Doe',
         address: {
           street: '456 Nutrition Ave',
           city: 'Hong Kong',
@@ -137,6 +139,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         email: 'info@comfydiaper.com',
         password: hashedMerchantPassword,
         phone: '+852 3456 7890',
+        contactPerson: 'Mike Johnson',
         address: {
           street: '789 Comfort Road',
           city: 'Hong Kong',
@@ -168,7 +171,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         password: hashedPassword,
         phone: '+852 1234 5678',
         addresses: [{
-          type: 'home',
+          type: 'shipping',
           firstName: 'John',
           lastName: 'Doe',
           phone: '+852 1234 5678',
@@ -186,7 +189,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         password: hashedPassword,
         phone: '+852 9876 5432',
         addresses: [{
-          type: 'home',
+          type: 'shipping',
           firstName: 'Jane',
           lastName: 'Smith',
           phone: '+852 9876 5432',
@@ -394,8 +397,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             total: products[1].price
           }
         ],
-        shippingAddress: users[0].addresses[0]._id,
-        billingAddress: users[0].addresses[0]._id,
+        shippingAddress: {
+          firstName: 'John',
+          lastName: 'Doe',
+          address1: '123 Main Street, Central',
+          city: 'Hong Kong',
+          state: 'Hong Kong',
+          postalCode: '00000',
+          country: 'Hong Kong',
+          phone: '+852 1234 5678'
+        },
+        billingAddress: {
+          firstName: 'John',
+          lastName: 'Doe',
+          address1: '123 Main Street, Central',
+          city: 'Hong Kong',
+          state: 'Hong Kong',
+          postalCode: '00000',
+          country: 'Hong Kong',
+          phone: '+852 1234 5678'
+        },
         paymentMethod: 'credit_card',
         status: 'processing',
         total: products[0].price * 2 + products[1].price,
@@ -416,8 +437,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             total: products[2].price
           }
         ],
-        shippingAddress: users[1].addresses[0]._id,
-        billingAddress: users[1].addresses[0]._id,
+        shippingAddress: {
+          firstName: 'Jane',
+          lastName: 'Smith',
+          address1: '456 Queen\'s Road, Wan Chai',
+          city: 'Hong Kong',
+          state: 'Hong Kong',
+          postalCode: '00000',
+          country: 'Hong Kong',
+          phone: '+852 9876 5432'
+        },
+        billingAddress: {
+          firstName: 'Jane',
+          lastName: 'Smith',
+          address1: '456 Queen\'s Road, Wan Chai',
+          city: 'Hong Kong',
+          state: 'Hong Kong',
+          postalCode: '00000',
+          country: 'Hong Kong',
+          phone: '+852 9876 5432'
+        },
         paymentMethod: 'paypal',
         status: 'shipped',
         total: products[2].price,
