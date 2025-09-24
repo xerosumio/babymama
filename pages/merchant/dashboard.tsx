@@ -259,9 +259,9 @@ export default function MerchantDashboard() {
                 <div className="mt-2 text-sm text-yellow-700">
                   <p>
                     You have {dashboardData.stats.totalProducts - dashboardData.stats.activeProducts} inactive products. 
-                    <a href="/merchant/products" className="font-medium underline hover:text-yellow-600">
+                    <Link href="/merchant/products" className="font-medium underline hover:text-yellow-600">
                       Review products
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
