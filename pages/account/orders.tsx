@@ -217,13 +217,13 @@ const OrdersPage: React.FC = () => {
                     {order.items.map((item, index) => (
                       <div key={index} className="flex items-center space-x-3">
                         <img
-                          src={item.productId?.image || '/placeholder-product.jpg'}
-                          alt={item.productId?.name || 'Product'}
+                          src={item.image || '/placeholder-product.jpg'}
+                          alt={item.name || 'Product'}
                           className="w-12 h-12 object-cover rounded-md"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-900 truncate">
-                            {item.productId?.name || 'Unknown Product'}
+                            {item.name || 'Unknown Product'}
                           </p>
                           <p className="text-sm text-gray-600">
                             Qty: {item.quantity} × {order.currency} {item.price.toFixed(2)}

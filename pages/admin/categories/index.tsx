@@ -418,7 +418,7 @@ export default function CategoriesPage() {
     categories.forEach(category => {
       // 处理populated的parentId（可能是对象或字符串）
       const parentId = typeof category.parentId === 'object' && category.parentId !== null 
-        ? category.parentId._id 
+        ? (category.parentId as any)._id 
         : category.parentId
 
       if (parentId) {
@@ -888,7 +888,7 @@ export default function CategoriesPage() {
                       value={editingCategory.parentId || ''}
                       onChange={(e) => setEditingCategory({
                         ...editingCategory,
-                        parentId: e.target.value || null
+                        parentId: e.target.value || undefined
                       })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                     >

@@ -125,9 +125,14 @@ export interface Merchant {
     country: string
   }
   isActive: boolean
+  status: 'pending' | 'active' | 'suspended' | 'inactive'
+  businessType: 'individual' | 'company'
+  contactPerson: string
+  businessLicense?: string
+  taxId?: string
   commissionRate: number
   payoutAccount: {
-    type: 'bank' | 'paypal'
+    type: 'bank' | 'paypal' | 'stripe'
     accountId: string
     accountName: string
   }

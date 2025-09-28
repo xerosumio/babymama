@@ -278,7 +278,7 @@ export default function MerchantDashboard() {
             <div className="mt-5">
               <div className="flow-root">
                 <ul className="-my-5 divide-y divide-gray-200">
-                  {dashboardData?.recentOrders?.length > 0 ? (
+                  {dashboardData?.recentOrders && dashboardData.recentOrders.length > 0 ? (
                     dashboardData.recentOrders.map((order) => (
                       <li key={order.orderNumber} className="py-4">
                         <div className="flex items-center space-x-4">

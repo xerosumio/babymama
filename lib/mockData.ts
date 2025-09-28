@@ -85,6 +85,9 @@ export const mockMerchants: Merchant[] = [
       country: 'Hong Kong',
     },
     isActive: true,
+    status: 'active',
+    businessType: 'company',
+    contactPerson: 'John Smith',
     commissionRate: 8,
     payoutAccount: {
       type: 'bank',
@@ -113,6 +116,9 @@ export const mockMerchants: Merchant[] = [
       country: 'Hong Kong',
     },
     isActive: true,
+    status: 'active',
+    businessType: 'company',
+    contactPerson: 'Jane Doe',
     commissionRate: 10,
     payoutAccount: {
       type: 'bank',
@@ -141,6 +147,9 @@ export const mockMerchants: Merchant[] = [
       country: 'Hong Kong',
     },
     isActive: true,
+    status: 'active',
+    businessType: 'company',
+    contactPerson: 'Mike Johnson',
     commissionRate: 12,
     payoutAccount: {
       type: 'bank',

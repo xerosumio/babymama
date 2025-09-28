@@ -39,6 +39,17 @@ interface Merchant {
   rating: number
   category: string
   description: string
+  contactPerson: string
+  businessType: 'individual' | 'company'
+  businessLicense?: string
+  taxId?: string
+  commissionRate: number
+  payoutAccount: {
+    type: 'bank' | 'paypal' | 'stripe'
+    accountId: string
+    accountName: string
+  }
+  createdAt: string
 }
 
 const mockMerchants: Merchant[] = [
@@ -55,7 +66,16 @@ const mockMerchants: Merchant[] = [
     totalProducts: 89,
     rating: 4.8,
     category: 'Baby Care',
-    description: 'Premium baby care products and essentials'
+    description: 'Premium baby care products and essentials',
+    contactPerson: 'John Smith',
+    businessType: 'company',
+    commissionRate: 8,
+    payoutAccount: {
+      type: 'bank',
+      accountId: '1234567890',
+      accountName: 'Baby Essentials Store Ltd'
+    },
+    createdAt: '2024-01-15'
   },
   {
     id: '2',
@@ -70,7 +90,16 @@ const mockMerchants: Merchant[] = [
     totalProducts: 0,
     rating: 0,
     category: 'Clothing',
-    description: 'Fashionable baby and toddler clothing'
+    description: 'Fashionable baby and toddler clothing',
+    contactPerson: 'Jane Doe',
+    businessType: 'individual',
+    commissionRate: 10,
+    payoutAccount: {
+      type: 'paypal',
+      accountId: 'jane.doe@tinytots.com',
+      accountName: 'Jane Doe'
+    },
+    createdAt: '2024-02-20'
   },
   {
     id: '3',
@@ -85,7 +114,16 @@ const mockMerchants: Merchant[] = [
     totalProducts: 156,
     rating: 4.6,
     category: 'Toys',
-    description: 'Educational and safe toys for children'
+    description: 'Educational and safe toys for children',
+    contactPerson: 'Mike Johnson',
+    businessType: 'company',
+    commissionRate: 12,
+    payoutAccount: {
+      type: 'bank',
+      accountId: '3456789012',
+      accountName: 'Safe & Sound Toys Ltd'
+    },
+    createdAt: '2024-01-10'
   },
   {
     id: '4',
@@ -100,7 +138,16 @@ const mockMerchants: Merchant[] = [
     totalProducts: 45,
     rating: 3.2,
     category: 'Maternity',
-    description: 'Maternity and nursing essentials'
+    description: 'Maternity and nursing essentials',
+    contactPerson: 'Sarah Wilson',
+    businessType: 'individual',
+    commissionRate: 15,
+    payoutAccount: {
+      type: 'stripe',
+      accountId: 'acct_sarah_wilson',
+      accountName: 'Sarah Wilson'
+    },
+    createdAt: '2024-01-05'
   }
 ]
 
@@ -216,7 +263,7 @@ export default function MerchantsPage() {
 
       if (response.ok) {
         setMerchants(merchants.map(merchant => 
-          merchant._id === merchantId ? { ...merchant, status: newStatus } : merchant
+          merchant.id === merchantId ? { ...merchant, status: newStatus } : merchant
         ))
         // Refresh stats
         const statsResponse = await fetch('/api/admin/merchants', {
@@ -250,7 +297,7 @@ export default function MerchantsPage() {
     setSelectedMerchants(
       selectedMerchants.length === filteredMerchants.length 
         ? [] 
-        : filteredMerchants.map(merchant => merchant._id)
+        : filteredMerchants.map(merchant => merchant.id)
     )
   }
 
@@ -280,7 +327,7 @@ export default function MerchantsPage() {
   }
 
   const getMerchantStatus = (merchantId: string) => {
-    return merchants.find(m => m._id === merchantId)?.status || 'pending'
+    return merchants.find(m => m.id === merchantId)?.status || 'pending'
   }
 
   const handleConfirmAction = async () => {
@@ -487,12 +534,12 @@ export default function MerchantsPage() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredMerchants.map((merchant) => (
-                  <tr key={merchant._id} className="hover:bg-gray-50">
+                  <tr key={merchant.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <input
                         type="checkbox"
-                        checked={selectedMerchants.includes(merchant._id)}
-                        onChange={() => handleSelectMerchant(merchant._id)}
+                        checked={selectedMerchants.includes(merchant.id)}
+                        onChange={() => handleSelectMerchant(merchant.id)}
                         className="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded"
                       />
                     </td>
@@ -524,14 +571,14 @@ export default function MerchantsPage() {
                         {merchant.status === 'pending' && (
                           <>
                             <button 
-                              onClick={() => showConfirmDialog('approve', merchant._id, merchant.name)}
+                              onClick={() => showConfirmDialog('approve', merchant.id, merchant.name)}
                               className="text-green-600 hover:text-green-800"
                               title="Approve"
                             >
                               <CheckCircle className="h-4 w-4" />
                             </button>
                             <button 
-                              onClick={() => showConfirmDialog('reject', merchant._id, merchant.name)}
+                              onClick={() => showConfirmDialog('reject', merchant.id, merchant.name)}
                               className="text-red-600 hover:text-red-800"
                               title="Reject"
                             >
@@ -544,14 +591,14 @@ export default function MerchantsPage() {
                         {merchant.status === 'active' && (
                           <>
                             <button 
-                              onClick={() => showConfirmDialog('suspend', merchant._id, merchant.name)}
+                              onClick={() => showConfirmDialog('suspend', merchant.id, merchant.name)}
                               className="text-yellow-600 hover:text-yellow-800"
                               title="Suspend"
                             >
                               <Clock className="h-4 w-4" />
                             </button>
                             <button 
-                              onClick={() => showConfirmDialog('deactivate', merchant._id, merchant.name)}
+                              onClick={() => showConfirmDialog('deactivate', merchant.id, merchant.name)}
                               className="text-red-600 hover:text-red-800"
                               title="Deactivate"
                             >
@@ -564,14 +611,14 @@ export default function MerchantsPage() {
                         {merchant.status === 'suspended' && (
                           <>
                             <button 
-                              onClick={() => showConfirmDialog('reactivate', merchant._id, merchant.name)}
+                              onClick={() => showConfirmDialog('reactivate', merchant.id, merchant.name)}
                               className="text-green-600 hover:text-green-800"
                               title="Reactivate"
                             >
                               <CheckCircle className="h-4 w-4" />
                             </button>
                             <button 
-                              onClick={() => showConfirmDialog('deactivate', merchant._id, merchant.name)}
+                              onClick={() => showConfirmDialog('deactivate', merchant.id, merchant.name)}
                               className="text-red-600 hover:text-red-800"
                               title="Deactivate"
                             >
@@ -583,7 +630,7 @@ export default function MerchantsPage() {
                         {/* 审核失败商家 - 重新审核 */}
                         {merchant.status === 'inactive' && (
                           <button 
-                            onClick={() => showConfirmDialog('reactivate', merchant._id, merchant.name)}
+                            onClick={() => showConfirmDialog('reactivate', merchant.id, merchant.name)}
                             className="text-green-600 hover:text-green-800"
                             title="Re-approve"
                           >
@@ -673,23 +720,11 @@ export default function MerchantsPage() {
                     <h4 className="text-md font-semibold text-gray-900 border-b pb-2">Address Information</h4>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Street</label>
-                      <p className="mt-1 text-sm text-gray-900">{selectedMerchant.address.street}</p>
+                      <p className="mt-1 text-sm text-gray-900">{selectedMerchant.address}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">City</label>
-                      <p className="mt-1 text-sm text-gray-900">{selectedMerchant.address.city}</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">State</label>
-                      <p className="mt-1 text-sm text-gray-900">{selectedMerchant.address.state}</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Postal Code</label>
-                      <p className="mt-1 text-sm text-gray-900">{selectedMerchant.address.postalCode}</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Country</label>
-                      <p className="mt-1 text-sm text-gray-900">{selectedMerchant.address.country}</p>
+                      <label className="block text-sm font-medium text-gray-700">Full Address</label>
+                      <p className="mt-1 text-sm text-gray-900">{selectedMerchant.address}</p>
                     </div>
                   </div>
 
@@ -738,14 +773,14 @@ export default function MerchantsPage() {
                   {selectedMerchant.status === 'pending' && (
                     <>
                       <button
-                        onClick={() => showConfirmDialog('approve', selectedMerchant._id, selectedMerchant.name)}
+                        onClick={() => showConfirmDialog('approve', selectedMerchant.id, selectedMerchant.name)}
                         className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center"
                       >
                         <CheckCircle className="h-4 w-4 mr-2" />
                         Approve
                       </button>
                       <button
-                        onClick={() => showConfirmDialog('reject', selectedMerchant._id, selectedMerchant.name)}
+                        onClick={() => showConfirmDialog('reject', selectedMerchant.id, selectedMerchant.name)}
                         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center"
                       >
                         <XCircle className="h-4 w-4 mr-2" />
@@ -758,14 +793,14 @@ export default function MerchantsPage() {
                   {selectedMerchant.status === 'active' && (
                     <>
                       <button
-                        onClick={() => showConfirmDialog('suspend', selectedMerchant._id, selectedMerchant.name)}
+                        onClick={() => showConfirmDialog('suspend', selectedMerchant.id, selectedMerchant.name)}
                         className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 flex items-center"
                       >
                         <Clock className="h-4 w-4 mr-2" />
                         Suspend
                       </button>
                       <button
-                        onClick={() => showConfirmDialog('deactivate', selectedMerchant._id, selectedMerchant.name)}
+                        onClick={() => showConfirmDialog('deactivate', selectedMerchant.id, selectedMerchant.name)}
                         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center"
                       >
                         <XCircle className="h-4 w-4 mr-2" />
@@ -778,14 +813,14 @@ export default function MerchantsPage() {
                   {selectedMerchant.status === 'suspended' && (
                     <>
                       <button
-                        onClick={() => showConfirmDialog('reactivate', selectedMerchant._id, selectedMerchant.name)}
+                        onClick={() => showConfirmDialog('reactivate', selectedMerchant.id, selectedMerchant.name)}
                         className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center"
                       >
                         <CheckCircle className="h-4 w-4 mr-2" />
                         Reactivate
                       </button>
                       <button
-                        onClick={() => showConfirmDialog('deactivate', selectedMerchant._id, selectedMerchant.name)}
+                        onClick={() => showConfirmDialog('deactivate', selectedMerchant.id, selectedMerchant.name)}
                         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center"
                       >
                         <XCircle className="h-4 w-4 mr-2" />
@@ -797,7 +832,7 @@ export default function MerchantsPage() {
                   {/* 审核失败商家 - 重新审核 */}
                   {selectedMerchant.status === 'inactive' && (
                     <button
-                      onClick={() => showConfirmDialog('reactivate', selectedMerchant._id, selectedMerchant.name)}
+                      onClick={() => showConfirmDialog('reactivate', selectedMerchant.id, selectedMerchant.name)}
                       className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center"
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
