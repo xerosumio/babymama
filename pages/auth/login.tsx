@@ -100,7 +100,7 @@ const LoginPage: React.FC = () => {
             <div className="ml-3">
               <h3 className="text-sm font-medium text-blue-800">Test Account</h3>
               <div className="mt-2 text-sm text-blue-700">
-                <p><strong>Email:</strong> kelly@test.com</p>
+                <p><strong>Email:</strong> john@example.com | jane@example.com</p>
                 <p><strong>Password:</strong> password123</p>
               </div>
               <div className="mt-2">
@@ -108,7 +108,7 @@ const LoginPage: React.FC = () => {
                   type="button"
                   onClick={() => {
                     setFormData({
-                      email: 'kelly@test.com',
+                      email: 'john@example.com',
                       password: 'password123'
                     })
                   }}
