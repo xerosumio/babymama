@@ -65,7 +65,7 @@ const Header: React.FC = () => {
               {/* Logo */}
               <Link href="/" className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-baby-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">👶</span>
+                  <img src="/images/babymama-logo.jpeg" alt="babymama" className="w-10 h-10" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">BABYMAMA</span>
               </Link>

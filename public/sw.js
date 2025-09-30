@@ -19,8 +19,21 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request)
+        if (response) {
+          return response
+        }
+        
+        // Fetch from network and cache for future use
+        return fetch(event.request).then(fetchResponse => {
+          // Only cache successful responses
+          if (fetchResponse.ok) {
+            const responseClone = fetchResponse.clone()
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseClone)
+            })
+          }
+          return fetchResponse
+        })
       })
   )
 })
