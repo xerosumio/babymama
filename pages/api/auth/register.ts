@@ -14,6 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const { 
+      firstName,
+      lastName,
       name, 
       email, 
       password, 
@@ -24,7 +26,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       address
     } = req.body
 
-    if (!name || !email || !password) {
+    // Use firstName + lastName if provided, otherwise use name
+    const fullName = firstName && lastName ? `${firstName} ${lastName}` : name
+
+    if (!fullName || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required' })
     }
 
@@ -47,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let user
     if (userType === 'merchant') {
       user = new Merchant({
-        name,
+        name: fullName,
         email,
         password: hashedPassword,
         phone,
@@ -58,7 +63,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     } else {
       user = new User({
-        name,
+        firstName: firstName || fullName.split(' ')[0],
+        lastName: lastName || fullName.split(' ').slice(1).join(' '),
         email,
         password: hashedPassword,
         phone

@@ -44,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         {/* New Label */}
         {product.isNew && (
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-2 sm:top-3 left-2 sm:left-3">
             <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
               {t('homepage.newLabel')}
             </span>
@@ -62,18 +62,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               addToWishlist(product)
             }
           }}
-          className={`absolute top-3 right-3 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 ${
+          className={`absolute top-2 sm:top-3 right-2 sm:right-3 p-1.5 sm:p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 ${
             isInWishlist(product._id) 
               ? 'bg-red-500 text-white' 
               : 'bg-white/80 text-gray-600 hover:bg-white'
           }`}
         >
-          <Heart className={`w-4 h-4 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
+          <Heart className={`w-3 h-3 sm:w-4 sm:h-4 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
         </button>
       </div>
 
       {/* Product Info */}
-      <div className="p-4 space-y-3">
+      <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
         {/* Brand */}
         <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
           {product.merchant?.name || 'BRAND'}
@@ -81,7 +81,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Product Name */}
         <Link href={`/product/${product.slug}`}>
-          <h3 className="font-medium text-gray-900 hover:text-baby-600 transition-colors line-clamp-2">
+          <h3 className="font-medium text-gray-900 hover:text-baby-600 transition-colors line-clamp-2 text-sm sm:text-base">
             {product.name[locale]}
           </h3>
         </Link>
@@ -92,13 +92,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-4 h-4 ${
+                className={`w-3 h-3 sm:w-4 sm:h-4 ${
                   i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'
                 }`}
               />
             ))}
           </div>
-          <span className="text-sm text-gray-500">
+          <span className="text-xs sm:text-sm text-gray-500">
             {t('homepage.rating', { count: 124 })}
           </span>
         </div>
@@ -106,11 +106,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Price */}
         <div className="flex items-center space-x-2">
           {product.compareAtPrice && product.compareAtPrice > product.price && (
-            <span className="text-sm text-gray-500 line-through">
+            <span className="text-xs sm:text-sm text-gray-500 line-through">
               {formatPrice(product.compareAtPrice)}
             </span>
           )}
-          <span className="text-lg font-bold text-baby-600">
+          <span className="text-base sm:text-lg font-bold text-baby-600">
             {formatPrice(product.price)}
           </span>
         </div>
@@ -118,9 +118,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Add to Cart Button */}
         <button 
           onClick={handleAddToCart}
-          className="w-full bg-baby-500 text-white py-2 px-4 rounded-lg hover:bg-baby-600 transition-colors font-medium flex items-center justify-center space-x-2"
+          className="w-full bg-baby-500 text-white py-2 px-3 sm:px-4 rounded-lg hover:bg-baby-600 transition-colors font-medium flex items-center justify-center space-x-2 text-sm sm:text-base"
         >
-          <ShoppingCart className="w-4 h-4" />
+          <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
           <span>{t('homepage.addToCart')}</span>
         </button>
       </div>

@@ -20,17 +20,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Email and password are required' })
     }
 
-    // Find merchant
-    const merchant = await Merchant.findOne({ email }).select('+password')
-
+    // Find merchant by email
+    const merchant = await Merchant.findOne({ email })
     if (!merchant) {
       return res.status(401).json({ error: 'Invalid credentials' })
     }
 
     // Check password
-    const isPasswordValid = await bcrypt.compare(password, merchant.password)
-
-    if (!isPasswordValid) {
+    const isValidPassword = await bcrypt.compare(password, merchant.password)
+    if (!isValidPassword) {
       return res.status(401).json({ error: 'Invalid credentials' })
     }
 
@@ -51,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     delete merchantResponse.password
 
     return res.status(200).json({
-      message: 'Merchant login successful',
+      message: 'Login successful',
       token,
       merchant: merchantResponse,
       userType: 'merchant'

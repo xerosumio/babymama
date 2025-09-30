@@ -35,9 +35,17 @@ const ProductSchema = new Schema({
   images: [String],
   variants: [ProductVariantSchema],
   tags: [String],
-  isActive: { type: Boolean, default: true },
+  status: {
+    type: String,
+    enum: ['draft', 'pending', 'approved', 'rejected', 'active', 'inactive'],
+    default: 'pending'
+  },
+  isActive: { type: Boolean, default: false },
   isFeatured: { type: Boolean, default: false },
   isNew: { type: Boolean, default: false },
+  reviewNotes: String, // Admin审核备注
+  reviewedAt: Date, // 审核时间
+  reviewedBy: { type: Schema.Types.ObjectId, ref: 'User' }, // 审核人
   weight: { type: Number, default: 0 },
   dimensions: {
     length: { type: Number, default: 0 },
@@ -60,6 +68,8 @@ ProductSchema.index({ categoryId: 1, isActive: 1 })
 ProductSchema.index({ merchantId: 1, isActive: 1 })
 ProductSchema.index({ isFeatured: 1, isActive: 1 })
 ProductSchema.index({ isNew: 1, isActive: 1 })
+ProductSchema.index({ status: 1, isActive: 1 })
+ProductSchema.index({ merchantId: 1, status: 1 })
 ProductSchema.index({ name: 'text', description: 'text' })
 
 export default mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema)

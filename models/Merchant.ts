@@ -35,12 +35,25 @@ const MerchantSchema = new Schema({
     postalCode: { type: String, required: true },
     country: { type: String, required: true },
   },
-  isActive: { type: Boolean, default: true },
+  isActive: { type: Boolean, default: false },
+  status: { 
+    type: String, 
+    enum: ['pending', 'active', 'suspended', 'inactive'], 
+    default: 'pending' 
+  },
+  businessType: { 
+    type: String, 
+    enum: ['individual', 'company'], 
+    default: 'individual' 
+  },
+  contactPerson: { type: String, required: true },
+  businessLicense: String,
+  taxId: String,
   commissionRate: { type: Number, required: true },
   payoutAccount: {
-    type: { type: String, enum: ['bank', 'paypal', 'stripe'], required: true },
-    accountId: { type: String, required: true },
-    accountName: { type: String, required: true },
+    type: { type: String, enum: ['bank', 'paypal', 'stripe'], default: 'bank' },
+    accountId: { type: String, default: '' },
+    accountName: { type: String, default: '' },
   },
   shippingTemplates: [ShippingTemplateSchema],
 }, {

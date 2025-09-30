@@ -14,7 +14,9 @@ import {
   X,
   Bell,
   Shield,
-  Building2
+  Building2,
+  FolderTree,
+  Package
 } from 'lucide-react'
 
 interface AdminLayoutProps {
@@ -24,6 +26,8 @@ interface AdminLayoutProps {
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Merchants', href: '/admin/merchants', icon: Building2 },
+  { name: 'Products', href: '/admin/products', icon: Package },
+  { name: 'Categories', href: '/admin/categories', icon: FolderTree },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
   { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
   { name: 'Settings', href: '/admin/settings', icon: Settings },

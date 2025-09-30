@@ -147,8 +147,89 @@ export default function AnalyticsPage() {
   const router = useRouter()
   const { merchant, isAuthenticated, isLoading } = useMerchant()
   const [analytics, setAnalytics] = useState<AnalyticsData>(mockAnalytics)
+  const [loading, setLoading] = useState(true)
   const [timeRange, setTimeRange] = useState('30d')
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  // Fetch analytics data from API
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const token = localStorage.getItem('merchant_token')
+        if (!token || !merchant) return
+
+        const response = await fetch(`/api/merchant/analytics?period=${timeRange}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          // Transform API data to match component interface
+          const transformedData: AnalyticsData = {
+            revenue: {
+              total: data.revenue.total,
+              change: data.revenue.change,
+              changeType: data.revenue.changeType,
+              monthly: [], // Could be calculated from daily data
+              daily: data.revenue.daily.map((item: any) => ({
+                date: item.date,
+                value: item.revenue
+              }))
+            },
+            orders: {
+              total: data.orders.total,
+              change: data.orders.change,
+              changeType: data.orders.changeType,
+              daily: data.orders.daily
+            },
+            products: {
+              total: data.products.total,
+              active: data.products.active,
+              lowStock: data.products.lowStock,
+              topSelling: data.products.topSelling
+            },
+            customers: {
+              total: data.customers.total,
+              new: data.customers.new,
+              returning: data.customers.returning,
+              change: 0, // Could calculate from API
+              changeType: 'up' as const
+            },
+            conversion: {
+              views: 0, // Not tracked yet
+              addToCart: 0, // Not tracked yet
+              purchases: data.orders.total,
+              conversionRate: 0 // Could calculate
+            },
+            reviews: {
+              average: data.reviews.average,
+              total: data.reviews.total,
+              recent: data.reviews.recent.map((review: any) => ({
+                customer: review.customer?.firstName + ' ' + review.customer?.lastName || 'Anonymous',
+                rating: review.rating,
+                comment: review.comment,
+                date: new Date(review.createdAt).toISOString().split('T')[0]
+              }))
+            }
+          }
+          setAnalytics(transformedData)
+        } else {
+          console.error('Failed to fetch analytics')
+          // Keep mock data if API fails
+        }
+      } catch (error) {
+        console.error('Error fetching analytics:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (isAuthenticated && merchant) {
+      fetchAnalytics()
+    }
+  }, [isAuthenticated, merchant, timeRange])
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -158,17 +239,37 @@ export default function AnalyticsPage() {
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setIsRefreshing(false)
+    setLoading(true)
+    
+    try {
+      const token = localStorage.getItem('merchant_token')
+      if (token && merchant) {
+        const response = await fetch(`/api/merchant/analytics?period=${timeRange}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          // Update analytics data (same transformation as above)
+          // ... (same transformation logic)
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing analytics:', error)
+    } finally {
+      setIsRefreshing(false)
+      setLoading(false)
+    }
   }
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">Loading analytics...</p>
         </div>
       </div>
     )

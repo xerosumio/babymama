@@ -54,7 +54,6 @@ async function getOrders(req: NextApiRequest, res: NextApiResponse) {
       .sort(sortOptions)
       .limit(Number(limit) * 1)
       .skip((Number(page) - 1) * Number(limit))
-      .populate('userId', 'firstName lastName email')
 
     const total = await Order.countDocuments(query)
 
@@ -75,7 +74,19 @@ async function getOrders(req: NextApiRequest, res: NextApiResponse) {
 
 async function createOrder(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const order = new Order(req.body)
+    const orderData = req.body
+    
+    // Generate order number
+    const orderNumber = `BM${Date.now()}${Math.floor(Math.random() * 1000)}`
+    
+    // Create order with generated order number
+    const order = new Order({
+      ...orderData,
+      orderNumber,
+      status: 'pending',
+      paymentStatus: 'pending'
+    })
+    
     await order.save()
     
     return res.status(201).json(order)

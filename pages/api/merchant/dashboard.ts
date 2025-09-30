@@ -31,10 +31,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Calculate total sales
     const totalSales = orders.reduce((sum, order) => {
-      const merchantItems = order.items.filter(item => 
+      const merchantItems = order.items.filter((item: any) => 
         item.merchantId.toString() === merchantId
       )
-      return sum + merchantItems.reduce((itemSum, item) => itemSum + item.total, 0)
+      return sum + merchantItems.reduce((itemSum: number, item: any) => itemSum + item.total, 0)
     }, 0)
 
     // Get recent orders

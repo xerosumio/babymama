@@ -29,7 +29,7 @@ function App({ Component, pageProps }: AppProps) {
         <meta name="description" content="babymama - Premium mother & baby products" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="theme-color" content="#7dd3fc" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="babymama" />
       </Head>
